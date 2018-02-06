@@ -1,0 +1,122 @@
+﻿@model List<Weather_Forecast.Forecast.List>
+
+@{
+    ViewBag.Title = "Weather Forecast";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@ViewBag.Title</title>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body> 
+    <div class="navbar navbar-inverse navbar-fixed-top"></div>
+                <div class="jumbotron">
+                   <div class="container" style="margin: 0 auto; width: 30%">
+                           <h2 class="jumbotron__title">Open Weather Forecast</h2>
+                       </div>
+                    </div>
+                    <div class="container" style="margin: 0 auto; width: 30%">
+                <div class="form-group mx-sm-3 mb-2">
+                    <form class="form-inline">
+                        @using (Html.BeginForm("Index", "Home"))
+                        {
+                            @Html.TextBox("city", null, new { @class = "form-control", @placeholder = "Your city name" })
+                            <button type="submit" class="btn">Search</button>
+                        }
+                        <p class="text-danger">@ViewBag.Error<p>
+                    </form>
+                </div>
+                </div>
+        <div class="container">
+            <div class="row">
+                <hr>
+                <h2 class="text-color alert-danger" align="center">
+                    Current weather and forecasts in your city
+                </h2>
+                <div class="row portfolio">
+                    <div class="col-sm-4">
+                        <div class="portfolio-item">
+                            <div class="portfolio-desc">
+                                <h3 class="primary-font">
+                                    Weather in @ViewData["city"], @ViewData["country"]
+                                </h3>
+                                <h3><img src="@ViewData["icon"]" height="50" width="50" />
+                                   @ViewData["temp"] &#8451</h3>
+                                <p>@ViewData["weather_main"]</p>
+                                <p>@ViewData["time"] </p>
+                                <p class="text-danger">
+                                    Details:
+                                </p>
+                                <table class="table table-striped">
+                                    <tr>
+                                        <td scope="col">Wind</td>
+                                        <td scope="col">@ViewData["weather"], @ViewData["wind"]  m/s, @ViewData["wind_deg_dir"] (@ViewData["wind_deg"])</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">Cloudiness</td>
+                                        <td scope="col">@ViewData["weather_main"]</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">Pressure</td>
+                                        <td scope="col">@ViewData["pressure"]  hpa</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">Humidity</td>
+                                        <td scope="col">@ViewData["humidity"] %</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">Sunrise</td>
+                                        <td scope="col">@ViewData["sunrise"]</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">Sunset</td>
+                                        <td scope="col">@ViewData["sunset"]</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                            <h3 class="primary-font alert-success">5 day weather forecast / 3 hour forecast data</h3>
+                            <p class="text-muted">
+                            </p>
+                            <table class="table table-striped">
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td scope="col"><p>@item.dt_txt</p></td>
+                                        <td scope="col"><img src="@item.weather[0].icon" height="50" width="50" /></td>
+                                        <td scope="col"><p>@item.weather[0].description</p></td>
+                                        <td scope="col">
+                                            <p class="text-danger">@item.main.temp_max &#8451</p>
+                                            <p class="text-info">@item.main.temp_min &#8451</p>
+                                        </td>
+                                        <td scope="col">@item.wind.speed m/s</td>
+                                        <td scope="col">@item.main.pressure hpa</td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+  
+        <footer>
+            <div class="container center_div">
+                <p>&copy; @DateTime.Now.Year – designed by Sergii Pogoretskyi</p>
+                </div>
+            </footer>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>
+
